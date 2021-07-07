@@ -48,7 +48,7 @@ const assert = require('assert');
 		.done((err, result) => {
 			assert.ifError(err);
 			assert.strictEqual(Object.keys(result).length, 3);
-			assert.strictEqual(result.key3, 3)
+			assert.strictEqual(result.key3, 3);
 			console.log();
 			console.log('#3', 'Test dc: pick, collect, take methods:', result);
 		});
@@ -63,4 +63,48 @@ const assert = require('assert');
 	dc.collect('key2', null, 2);
 	dc.take('key3', asyncReturn, 3);
 	dc.take('key4', asyncReturn, 5);
+}
+
+// #4
+
+{
+	const kc = collect(['key1', 'key2', 'key3'])
+		.timeout(2000)
+		.then(
+			result => {
+				console.log('will never come true');
+			},
+			err => {
+				assert.ok(err);
+				console.log();
+				console.log('#4', 'Test thenable (reject)', err);
+				console.log();
+			});
+
+	kc.collect('key1', null, 1);
+	kc.collect('key1', null, 2);
+	kc.collect('key2', null, 2);
+}
+
+// #5
+
+{
+	const kc = collect(['key1', 'key2', 'key3'])
+		.timeout(2000)
+		.then(
+			result => {
+				assert.strictEqual(Object.keys(result).length, 3);
+				assert.strictEqual(result.key3, 3);
+				assert.strictEqual(result.key2, 2);
+				assert.strictEqual(result.key1, 1);
+				console.log();
+				console.log('#5', 'Test thenable (resolve)', result);
+			},
+			err => {
+				console.log('will never come true');
+			});
+
+	kc.collect('key1', null, 1);
+	kc.collect('key3', null, 3);
+	kc.collect('key2', null, 2);
 }
