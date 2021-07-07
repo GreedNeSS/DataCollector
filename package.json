@@ -1,0 +1,16 @@
+{
+  "name": "collectors_data",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "GreeD",
+  "license": "ISC",
+  "dependencies": {
+    "metarhia-common": "0.0.38",
+    "metasync": "^0.3.32",
+    "metatests": "^0.7.2"
+  }
+}
